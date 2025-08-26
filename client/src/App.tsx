@@ -51,7 +51,7 @@ const GitHubExplorer: React.FC = () => {
 
   // -------------------- API Functions --------------------
   const searchRepositories = useCallback(
-    async (page = 1, select?: string, searchData?: string) => {
+    async (page = 1, searchData?: string) => {
       const query = searchData || currentSearchQuery;
       if (!query.trim()) {
         setSearchResults([]);
@@ -154,7 +154,7 @@ const GitHubExplorer: React.FC = () => {
       setSearchPageData({ pageNum: 1, totalPages: 0 });
 
       if (query.trim()) {
-        searchRepositories(1, undefined, query);
+        searchRepositories(1, query);
       } else {
         setSearchResults([]);
         setTotalCount(0);
