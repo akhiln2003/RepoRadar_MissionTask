@@ -3,6 +3,8 @@ import {
   connectDB,
   disconnectDB,
 } from "./infrastructure/database/mongodb/connection";
+import { errorHandler } from "./infrastructure/middlewares/errorMiddleware";
+import { Routers } from "./presentation/routes/routes";
 
 export class App {
   constructor(private _server: Iserver) {}
@@ -15,13 +17,16 @@ export class App {
   }
 
   private _registerMiddleware(): void {
-    // this._server.registerMiddleware();
+    // register global middleware if needed
   }
-  private _registerRoutes(): void {
 
+  private _registerRoutes(): void {
+    const routes = new Routers().getRouter();
+    this._server.registerRoutes("/api", routes);
   }
 
   private _registerErrorHandler(): void {
+   this._server.registerErrorHandler(errorHandler);
   }
 
   async start(port: number): Promise<void> {
@@ -30,13 +35,14 @@ export class App {
 
   async shutdown(): Promise<void> {
     await disconnectDB();
-    console.log("Shut dow server");
+    console.log("Server shut down gracefully");
   }
-  private async _connectDB() {
+
+  private async _connectDB(): Promise<void> {
     try {
       await connectDB();
-    } catch (error) {
-      console.log("Server could not be started", error);
+    } catch (error: any) {
+      console.error("Database connection failed:", error);
       process.exit(1);
     }
   }

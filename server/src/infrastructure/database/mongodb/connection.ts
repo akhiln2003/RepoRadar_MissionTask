@@ -1,25 +1,24 @@
 import mongoose from "mongoose";
 
-const connectDB = async () => {
-  if (!process.env.MONGODB_URI) {
-    throw new Error("MONGO_URI must defined");
-  }
+const connectDB = async (): Promise<void> => {
   const MONGO_URI = process.env.MONGODB_URI;
+  if (!MONGO_URI) throw new Error("MONGODB_URI must be defined");
+
   try {
     await mongoose.connect(`${MONGO_URI}/github_search_app`);
-    console.log("connected to mongodb");
-  } catch (error) {
+    console.log("Connected to MongoDB");
+  } catch (error: any) {
     console.error("Database connection failed:", error);
     process.exit(1);
   }
 };
 
-const disconnectDB = async () => {
+const disconnectDB = async (): Promise<void> => {
   try {
     await mongoose.disconnect();
-    console.log("mongo disconnected");
-  } catch (error) {
-    console.error("err while disconnecting db : ", error);
+    console.log("Disconnected from MongoDB");
+  } catch (error: any) {
+    console.error("Error during disconnect:", error);
   }
 };
 

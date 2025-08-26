@@ -3,6 +3,7 @@ import { Iserver } from "../../domain/interfaces/Iserver";
 import express from "express";
 import cookieParser from "cookie-parser";
 import { createServer } from "http";
+import cors from "cors";
 
 export class ExpressWebServer implements Iserver {
   private _app: Application;
@@ -11,6 +12,13 @@ export class ExpressWebServer implements Iserver {
   constructor() {
     this._app = express();
     this._app.use(cookieParser());
+    this._app.use(
+      cors({
+        origin: "http://localhost:5173", // Frontend origin
+        methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
+        credentials: true, // If you're sending cookies or authorization headers
+      })
+    );
     this._app.use(express.urlencoded({ extended: true }));
     this._app.use(express.json());
 
