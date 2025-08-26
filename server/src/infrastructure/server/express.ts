@@ -14,7 +14,7 @@ export class ExpressWebServer implements Iserver {
     this._app.use(cookieParser());
     this._app.use(
       cors({
-        origin: "https://reporadar-missiontask.onrender.com", // Frontend origin
+        origin: "https://repo-radar-mission-task.vercel.app", // Frontend origin
         methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
         credentials: true, // If you're sending cookies or authorization headers
       })
